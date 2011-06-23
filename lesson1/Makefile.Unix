@@ -1,0 +1,19 @@
+GL_INCLUDE = /usr/X11R6/include
+GL_LIB = /usr/X11R6/lib
+CC_FLAGS = -Wextra -Wall -pedantic# warnings about unused functions, variables
+APP = lesson1
+CC = g++
+
+# ansi / c89 is not an option since sinf and the like are not defined in that
+# standard as built-in functions see
+# http://$(CC).gnu.org/onlinedocs/$(CC)/Other-Builtins.html
+STANDARD = -std=c99
+
+$(APP): textfile.o $(APP).o
+	$(CC) -o $(APP) $^ -L$(GL_LIB) -lGL -lglut -lGLEW
+
+.c.o:
+	$(CC) $(STANDARD) $(CC_FLAGS) -c -o $@ $< -I$(GL_INCLUDE)
+
+clean:
+	rm -f $(APP) *.o
